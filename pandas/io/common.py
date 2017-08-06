@@ -133,8 +133,20 @@ def _expand_user(filepath_or_buffer):
                                   input if not expandable
     """
     if isinstance(filepath_or_buffer, string_types):
-        return os.path.expanduser(filepath_or_buffer)
+        try:
+            import dwgstore.storage as dwg
+            try:
+                return dwg._expand_user(filepath_or_buffer)
+            except:
+                #print('dwg error')
+                return os.path.expanduser(filepath_or_buffer)
+        except:
+            #print('cannot load dwg module')
+            return os.path.expanduser(filepath_or_buffer)
     return filepath_or_buffer
+    #if isinstance(filepath_or_buffer, string_types):
+    #    return os.path.expanduser(filepath_or_buffer)
+    #return filepath_or_buffer
 
 
 def _validate_header_arg(header):
